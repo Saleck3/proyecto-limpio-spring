@@ -1,12 +1,16 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.servicios.ServicioAlimentos;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 public class ControladorBirrasTest {
 
@@ -15,23 +19,28 @@ public class ControladorBirrasTest {
     public static final String TIPO_INVALIDO = "FRUTA";
     public static final String MENSAJE_TIPO_INVALIDO = "tipo inexistente";
     private ControladorBirras controladorBirras;
+    private ServicioAlimentos servicioAlimentos;
+
+    @Before
+    public void init(){
+        servicioAlimentos = mock(ServicioAlimentos.class);
+        controladorBirras = new ControladorBirras(servicioAlimentos);
+    }
+
     @Test
     public void alPedirTodasLasBirrasDevuelveLaListaCompleta(){
 
-        // preparacion
-        dadoQuExistenCervezas(10, IPA);
+        dadoQueExistenCervezas(10, IPA);
 
-        // ejecucion
         ModelAndView mav = cuandoBuscoCervezaDeTipo(IPA);
 
-        // validacion
-        entoncesEncuentro((List<Cerveza>) mav.getModel().get("cervezas"), 10);
+        entoncesEncuentro(mav, 10);
         entoncesMeLLevaALaVista(VISTA_LISTADO_CERVEZAS, mav.getViewName());
     }
 
     @Test
     public void alPedirUnTipoInvalidoLlevaAPantallaDeError(){
-        dadoQuExistenCervezas(10, IPA);
+        when(servicioAlimentos.buscarCervezasDelTipo(TIPO_INVALIDO)).thenThrow(new RuntimeException());
 
         ModelAndView mav = cuandoBuscoCervezaDeTipo(TIPO_INVALIDO);
 
@@ -39,8 +48,16 @@ public class ControladorBirrasTest {
         entoncesSeRecibeMensaje(MENSAJE_TIPO_INVALIDO, mav.getModel());
     }
 
-    private ModelAndView cuandoBuscoCervezaDeTipo(String ipa) {
-        return controladorBirras.listar(ipa);
+    private void dadoQueExistenCervezas(int cantidad, String tipo) {
+        List<Cerveza> lista = new LinkedList<>();
+        for(int i = 0 ; i < cantidad; i++){
+            lista.add(new Cerveza(tipo));
+        }
+        when(servicioAlimentos.buscarCervezasDelTipo(tipo)).thenReturn(lista);
+    }
+
+    private ModelAndView cuandoBuscoCervezaDeTipo(String tipo) {
+        return controladorBirras.listar(tipo);
     }
 
     private void entoncesSeRecibeMensaje(String mensaje, Map<String, Object> model) {
@@ -51,11 +68,8 @@ public class ControladorBirrasTest {
         assertThat(vistaRecibida).isEqualTo(vistaEsperada);
     }
 
-    private void entoncesEncuentro(List<Cerveza> lista, int cantidadEsperada) {
+    private void entoncesEncuentro(ModelAndView mav, int cantidadEsperada) {
+        List<Cerveza> lista = (List<Cerveza>) mav.getModel().get("cervezas");
         assertThat(lista).hasSize(cantidadEsperada);
-    }
-
-    private void dadoQuExistenCervezas(int cantidadExistente, String tipo) {
-        controladorBirras = new ControladorBirras(cantidadExistente, tipo);
     }
 }

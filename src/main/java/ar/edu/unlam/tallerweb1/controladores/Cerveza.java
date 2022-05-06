@@ -10,4 +10,11 @@ public class Cerveza {
     public String getTipo() {
         return tipo;
     }
+
+    @Override
+    public String toString() {
+        return "Cerveza{" +
+                "tipo='" + tipo + '\'' +
+                '}';
+    }
 }

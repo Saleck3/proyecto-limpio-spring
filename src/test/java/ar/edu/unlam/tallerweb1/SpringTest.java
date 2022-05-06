@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.inject.Inject;
+
 // Se indica que los test que hereden de esta clase corran con el runner de junit para spring.
 @RunWith(SpringJUnit4ClassRunner.class)
 // Se indica
