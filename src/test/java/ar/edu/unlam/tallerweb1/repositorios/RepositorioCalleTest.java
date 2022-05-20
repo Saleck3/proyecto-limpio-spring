@@ -1,7 +1,10 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
 import ar.edu.unlam.tallerweb1.SpringTest;
+import ar.edu.unlam.tallerweb1.modelo.Barrio;
 import ar.edu.unlam.tallerweb1.modelo.Calle;
+import ar.edu.unlam.tallerweb1.modelo.Direccion;
+import org.hibernate.criterion.Restrictions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -78,5 +81,34 @@ public class RepositorioCalleTest extends SpringTest {
 
         // validacion
         assertThat(resultado).hasSize(2);
+    }
+
+    @Test @Transactional @Rollback
+    public void guardarDireccion(){
+
+        Direccion direccion = new Direccion();
+        direccion.setAltura(1);
+        direccion.setCalle("peru");
+        direccion.setPiso(1);
+
+        Barrio ramos = new Barrio();
+        ramos.setNombre("ramos mejia");
+        session().save(ramos);
+
+        direccion.setBarrio(ramos);
+        session().save(direccion);
+
+        // por nombre del barrio
+        List direcciones = session().createCriteria(Direccion.class)
+                .createAlias("barrio", "b")
+                .add(Restrictions.eq("b.nombre", "ramos mejia"))
+                .list();
+        assertThat(direcciones).hasSize(1);
+
+        // por barrio, o sea por id de barrio
+        direcciones = session().createCriteria(Direccion.class)
+                .add(Restrictions.eq("barrio", ramos))
+                .list();
+        assertThat(direcciones).hasSize(1);
     }
 }
