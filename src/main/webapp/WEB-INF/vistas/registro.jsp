@@ -17,12 +17,13 @@
 
             <form:input path="email" id="email" class="form-control" />
             <form:input path="clave" type="password" id="clave" class="form-control"/>
+            <form:input path="repiteClave" type="password" id="clave" class="form-control"/>
 
             <button id="btn-registrarme" class="btn btn-lg btn-primary btn-block" Type="Submit"/>Registrarme</button>
         </form:form>
 
-        <c:if test="${not empty error}">
-            <h4><span>${error}</span></h4>
+        <c:if test="${not empty mensaje}">
+            <h4><span>${mensaje}</span></h4>
             <br>
         </c:if>
     </div>

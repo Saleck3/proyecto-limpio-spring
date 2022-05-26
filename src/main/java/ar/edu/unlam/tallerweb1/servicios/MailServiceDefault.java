@@ -9,4 +9,9 @@ public class MailServiceDefault implements MailService{
     public void enviarResetClave(String usuario) {
 
     }
+
+    @Override
+    public void enviarMailActivarCuenta(String mail) {
+
+    }
 }
