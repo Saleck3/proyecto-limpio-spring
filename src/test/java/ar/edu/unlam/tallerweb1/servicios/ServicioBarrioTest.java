@@ -1,6 +1,5 @@
 package ar.edu.unlam.tallerweb1.servicios;
 
-import ar.edu.unlam.tallerweb1.modelo.Barrio;
 import ar.edu.unlam.tallerweb1.modelo.Direccion;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioBarrio;
 import org.junit.Before;
@@ -25,22 +24,20 @@ public class ServicioBarrioTest {
 
     @Test
     public void buscarLasDireccionesDeUnBarrio(){
-        Set<Direccion> direcciones = new HashSet<>();
+        List<Direccion> direcciones = new LinkedList<>();
         dadoUnBarrioConDirecciones("ramos mejia", direcciones);
 
-        Barrio ramos = cuandoBuscoElBarrio("ramos mejia");
+        List<Direccion> lugares = cuandoBuscoElBarrio("ramos mejia");
 
-        entoncesObtengo(ramos.getLugares(), direcciones.size());
+        entoncesObtengo(lugares, direcciones.size());
     }
 
-    private void dadoUnBarrioConDirecciones(String nombre, Set<Direccion> direcciones) {
+    private void dadoUnBarrioConDirecciones(String nombre, List<Direccion> direcciones) {
 
-        Barrio barrio = mock(Barrio.class);
-        when(barrio.getLugares()).thenReturn(direcciones);
-        when(repositorio.buscarPor(nombre)).thenReturn(barrio);
+        when(repositorio.buscarPor(nombre)).thenReturn(direcciones);
     }
 
-    private Barrio cuandoBuscoElBarrio(String barrio) {
+    private List<Direccion> cuandoBuscoElBarrio(String barrio) {
         return servicio.buscarPorNombre(barrio);
     }
 

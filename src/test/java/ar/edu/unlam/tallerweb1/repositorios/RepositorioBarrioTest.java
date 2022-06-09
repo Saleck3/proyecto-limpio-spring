@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,31 +24,33 @@ public class RepositorioBarrioTest extends SpringTest {
     public void buscarPorNombre(){
         dadoUnBarrioConDirecciones();
 
-        Barrio buscado = cuandoBuscoPorNombre(ramos.getNombre());
+        final List<Direccion> direccions = cuandoBuscoPorNombre(ramos.getNombre());
 
-        entoncesEncuentro(buscado.getLugares(), ramos.getLugares().size());
+        entoncesEncuentro(direccions, 2);
     }
 
-    private void entoncesEncuentro(Set<Direccion> lugares, int size) {
+    private void entoncesEncuentro(List<Direccion> lugares, int size) {
         assertThat(lugares).hasSize(size);
     }
 
-    private Barrio cuandoBuscoPorNombre(String nombre) {
+    private List<Direccion> cuandoBuscoPorNombre(String nombre) {
         return repositorioBarrio.buscarPor(nombre);
     }
 
     private void dadoUnBarrioConDirecciones() {
 
-        ramos.setNombre("Ramos Mejia");
+        ramos = new Barrio();
+        ramos.setNombre("haedo");
+        session().save(ramos);
 
         Direccion d1 = new Direccion();
         d1.setCalle("Peru");
-        ramos.agregar(d1);
+        d1.setBarrio(ramos);
+        session().save(d1);
 
         Direccion d2 = new Direccion();
         d2.setCalle("Chile");
-        ramos.agregar(d2);
-
-        session().save(ramos);
+        d2.setBarrio(ramos);
+        session().save(d2);
     }
 }
