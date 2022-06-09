@@ -10,6 +10,7 @@ public class Direccion {
     private String calle;
     private Integer altura;
     private Integer piso;
+
     @ManyToOne
     @JoinColumn(name = "barrio_id")
     private Barrio barrio;

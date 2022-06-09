@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -22,6 +24,7 @@ public class ControladorUsuariosDeberia {
 
     @Test
     public void retornarErrorAlRegistrarUnUsuarioConUnMailExistente(){
+
         dadoQueExisteUnUsuarioConMail("usuario@usuario.com", "");
 
         ModelAndView mav = cuandoRegistroUnUsuarioConMail("usuario@usuario.com", "", "");
