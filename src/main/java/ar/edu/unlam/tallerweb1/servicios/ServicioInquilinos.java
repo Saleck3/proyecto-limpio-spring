@@ -6,4 +6,5 @@ import java.util.List;
 public interface ServicioInquilinos {
     public Long crearInquilino(Inquilino inquilino);
     public List<Inquilino> consultarInquilinos();
+    public void borrarInquilino(Long id);
 }

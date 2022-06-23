@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
+@Service("ServicioInquilinos")
 @Transactional
 public class ServicioInquilinoImpl implements ServicioInquilinos{
 
@@ -21,11 +21,17 @@ public class ServicioInquilinoImpl implements ServicioInquilinos{
 
     @Override
     public Long crearInquilino(Inquilino inquilino) {
-        return this.repositorioInquilinos.save(inquilino).getId();
+        return this.repositorioInquilinos.save(inquilino);
     }
 
     @Override
     public List<Inquilino> consultarInquilinos(){
         return this.repositorioInquilinos.findAll();
+    }
+
+    @Override
+    public void borrarInquilino(Long id){
+        this.repositorioInquilinos.delete(id);
+        return;
     }
 }
