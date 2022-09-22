@@ -1,0 +1,18 @@
+* Agregar capa WEB a los controladores y explicar Spring WEB
+
+	Estereotipos: MVC
+	
+	petición http: url + método (http://localhost:8080/proyecto-limpio-spring/login)
+	
+* get y post, cuando usar cada una, ejemplos
+
+	GET: pasar parámetros por URL
+		@RequestParam: http://localhost:8080/proyecto-limpio-spring/ir-a-pagina?nombre=Dami+Agus
+			Dami Agus
+		@PathVariable: http://localhost:8080/proyecto-limpio-spring/ir-a-pagina/nombre/Dami+Agus
+			Dami+Agus
+			
+	POST: cambiar el estado del lado del server.
+	
+	
+* levantar la app con tomcat"
