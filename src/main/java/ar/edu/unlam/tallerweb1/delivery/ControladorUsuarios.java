@@ -23,6 +23,7 @@ public class ControladorUsuarios {
     public ModelAndView registrarUsuario(@ModelAttribute("datosRegistro") DatosRegistro datosRegistro) {
         if(lasClavesNoCoinciden(datosRegistro.getClave(), datosRegistro.getRepiteClave())){
             ModelMap model = new ModelMap();
+            model.put("error", "las claves no coinciden");
             model.put("datosRegistro", new DatosRegistro());
             return new ModelAndView("registrarme", model);
         }
@@ -30,7 +31,9 @@ public class ControladorUsuarios {
         try {
             servicioLogin.registrar(datosRegistro.getUsuario(), datosRegistro.getClave());
         } catch (Exception e) {
-            return new ModelAndView("registrarme");
+            ModelMap model = new ModelMap();
+            model.put("error", "El usuario ya existe");
+            return new ModelAndView("registrarme", model);
         }
         return new ModelAndView("redirect:/login");
     }
