@@ -28,6 +28,26 @@ public class ServicioLoginDeberia {
         entoncesSeGuardaElUsuario("seba@seba.com", "1234");
     }
 
+    @Test(expected = Exception.class)
+    public void lanzarErrorAlRegistrarUnUsuarioExistente(){
+        dadoQueExisteElUsuario("pepe@lepu.com");
+
+        cuandoRegistroElUsuario("pepe@lepu.com");
+    }
+
+    private void dadoQueExisteElUsuario(String usuarioQueYaExiste) {
+        Usuario usuario= new Usuario();
+        when(repositorioUsuario.buscar(usuarioQueYaExiste)).thenReturn(usuario);
+    }
+
+    private void cuandoRegistroElUsuario(String usuario) {
+        cuandoRegistroElUsuario(usuario, "");
+    }
+
+    private void cuandoRegistroElUsuario(String usuario, String clave) {
+        servicioLogin.registrar(usuario, clave);
+    }
+
     private void entoncesSeGuardaElUsuario(String usuario, String clave) {
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setEmail(usuario);
@@ -37,7 +57,5 @@ public class ServicioLoginDeberia {
         // ArgumentMatchers
     }
 
-    private void cuandoRegistroElUsuario(String usuario, String clave) {
-        servicioLogin.registrar(usuario, clave);
-    }
+
 }
