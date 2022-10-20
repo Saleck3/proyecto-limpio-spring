@@ -10,12 +10,21 @@ public class ControladorUsuarios {
     public ControladorUsuarios(ServicioLogin servicioLogin){
         this.servicioLogin = servicioLogin;
     }
-    public ModelAndView registrarUsuario(String usuario) {
+
+    public ModelAndView registrarUsuario(DatosRegistro datosRegistro) {
+        if(lasClavesNoCoinciden(datosRegistro.getClave(), datosRegistro.getRepiteClave()))
+            return new ModelAndView("registrarme");
         try {
-            servicioLogin.registrar(usuario);
-        } catch (Exception e){
+            servicioLogin.registrar(datosRegistro.getUsuario());
+        } catch (Exception e) {
             return new ModelAndView("registrarme");
         }
         return new ModelAndView("login");
     }
+
+    private static boolean lasClavesNoCoinciden(String clave, String repiteClave) {
+        return !clave.equals(repiteClave);
+    }
+
+
 }

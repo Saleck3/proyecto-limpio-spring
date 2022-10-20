@@ -36,6 +36,14 @@ public class ControladorUsuariosDeberia {
         entoncesMeRedirigeAlLogin(vista, "registrarme");
     }
 
+    @Test
+    public void darErrorAlRegistrarmeSiLasClavesNoCoinciden(){
+
+        String vista = cuandoRegistroElUsuario("lionel@messi.com", "1234", "1235");
+
+        entoncesMeRedirigeAlLogin(vista, "registrarme");
+    }
+
     private void dadoQueExisteElUsuario(String usuario) {
         doThrow(Exception.class).when(servicioLogin).registrar(usuario);
     }
@@ -45,7 +53,16 @@ public class ControladorUsuariosDeberia {
     }
 
     private String cuandoRegistroElUsuario(String usuario) {
-        ModelAndView mav = controladorUsuarios.registrarUsuario(usuario);
+        ModelAndView mav = controladorUsuarios.registrarUsuario(conDatos(usuario, "", ""));
         return mav.getViewName();
+    }
+
+    private String cuandoRegistroElUsuario(String usuario, String clave, String repiteClave) {
+        ModelAndView mav = controladorUsuarios.registrarUsuario(conDatos(usuario, clave, repiteClave));
+        return mav.getViewName();
+    }
+
+    private DatosRegistro conDatos(String usuario, String clave, String repiteClave){
+        return new DatosRegistro(usuario, clave, repiteClave);
     }
 }
