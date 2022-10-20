@@ -1,8 +1,21 @@
 package ar.edu.unlam.tallerweb1.delivery;
 
 public class DatosRegistro {
-    private final String usuario;
-    private final String clave;
+    private String usuario;
+    private String clave;
+    private String repiteClave;
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public void setRepiteClave(String repiteClave) {
+        this.repiteClave = repiteClave;
+    }
 
     public String getUsuario() {
         return usuario;
@@ -16,11 +29,13 @@ public class DatosRegistro {
         return repiteClave;
     }
 
-    private final String repiteClave;
-
     public DatosRegistro(String usuario, String clave, String repiteClave) {
         this.usuario = usuario;
         this.clave = clave;
         this.repiteClave = repiteClave;
+    }
+
+    public DatosRegistro() {
+
     }
 }

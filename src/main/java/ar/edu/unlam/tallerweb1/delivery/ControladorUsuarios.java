@@ -1,25 +1,45 @@
 package ar.edu.unlam.tallerweb1.delivery;
 
 import ar.edu.unlam.tallerweb1.domain.usuarios.ServicioLogin;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 public class ControladorUsuarios {
 
-    private final ServicioLogin servicioLogin;
+    private ServicioLogin servicioLogin;
 
+    @Autowired
     public ControladorUsuarios(ServicioLogin servicioLogin){
         this.servicioLogin = servicioLogin;
     }
 
-    public ModelAndView registrarUsuario(DatosRegistro datosRegistro) {
-        if(lasClavesNoCoinciden(datosRegistro.getClave(), datosRegistro.getRepiteClave()))
-            return new ModelAndView("registrarme");
+    @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
+    public ModelAndView registrarUsuario(@ModelAttribute("datosRegistro") DatosRegistro datosRegistro) {
+        if(lasClavesNoCoinciden(datosRegistro.getClave(), datosRegistro.getRepiteClave())){
+            ModelMap model = new ModelMap();
+            model.put("datosRegistro", new DatosRegistro());
+            return new ModelAndView("registrarme", model);
+        }
+
         try {
             servicioLogin.registrar(datosRegistro.getUsuario(), datosRegistro.getClave());
         } catch (Exception e) {
             return new ModelAndView("registrarme");
         }
-        return new ModelAndView("login");
+        return new ModelAndView("redirect:/login");
+    }
+
+    @RequestMapping("/registrar-usuario")
+    public ModelAndView irARegistrar() {
+        ModelMap model = new ModelMap();
+        model.put("datosRegistro", new DatosRegistro());
+        return new ModelAndView("registrarme", model);
     }
 
     private static boolean lasClavesNoCoinciden(String clave, String repiteClave) {
