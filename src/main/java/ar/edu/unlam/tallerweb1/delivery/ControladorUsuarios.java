@@ -15,7 +15,7 @@ public class ControladorUsuarios {
         if(lasClavesNoCoinciden(datosRegistro.getClave(), datosRegistro.getRepiteClave()))
             return new ModelAndView("registrarme");
         try {
-            servicioLogin.registrar(datosRegistro.getUsuario());
+            servicioLogin.registrar(datosRegistro.getUsuario(), datosRegistro.getClave());
         } catch (Exception e) {
             return new ModelAndView("registrarme");
         }

@@ -14,21 +14,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ServicioLoginImpl implements ServicioLogin {
 
-	private RepositorioUsuario servicioLoginDao;
+	private RepositorioUsuario repositorioUsuario;
 
 	@Autowired
 	public ServicioLoginImpl(RepositorioUsuario servicioLoginDao){
-		this.servicioLoginDao = servicioLoginDao;
+		this.repositorioUsuario = servicioLoginDao;
 	}
 
 	@Override
 	public Usuario consultarUsuario (String email, String password) {
-		return servicioLoginDao.buscarUsuario(email, password);
+		return repositorioUsuario.buscarUsuario(email, password);
 	}
 
 	@Override
-	public void registrar(String usuario) {
-
+	public void registrar(String usuario, String clave) {
+		Usuario nuevoUsuario = new Usuario();
+		nuevoUsuario.setEmail(usuario);
+		nuevoUsuario.setPassword(clave);
+		repositorioUsuario.guardar(nuevoUsuario);
 	}
 
 }

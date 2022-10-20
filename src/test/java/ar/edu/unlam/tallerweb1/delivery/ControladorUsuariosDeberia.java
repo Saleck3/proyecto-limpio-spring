@@ -45,7 +45,7 @@ public class ControladorUsuariosDeberia {
     }
 
     private void dadoQueExisteElUsuario(String usuario) {
-        doThrow(Exception.class).when(servicioLogin).registrar(usuario);
+        doThrow(Exception.class).when(servicioLogin).registrar(usuario, "");
     }
 
     private void entoncesMeRedirigeAlLogin(String vista, String vistaEsperada) {
